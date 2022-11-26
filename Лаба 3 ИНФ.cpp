@@ -151,15 +151,56 @@ void check_order_of_sorting(string &order,string str)
 
 }
 
-void sortingarray(vector<int>& vec, int start, int end, string order)
+void sortingdesc(vector<int>& vec, int start, int end)
 {
-	sort(vec.begin() + (start - 1), vec.end() - (vec.size() - end));
+	reverse(vec.begin() + (start - 1), vec.end() - (vec.size() - end));
+}
 
-	if (order == "desc")
+void mergesortimpl(vector<int>& arr, vector<int>& buf, int left, int right)
+{
+	if (left < right)
 	{
-		reverse(vec.begin() + (start - 1), vec.end() - (vec.size() - end));
+		int middle = (left + right) / 2;
+
+		// разделяем и сортируем
+		mergesortimpl(arr, buf, left, middle);
+
+		mergesortimpl(arr, buf, middle + 1, right);
+
+		int k = left;
+
+		// слияние двух отсортированных половин
+		for (int i = left, j = middle + 1; i <= middle || j <= right; )
+		{
+			if (j > right || (i <= middle && arr[i] < arr[j]))
+			{
+				buf[k] = arr[i];
+				++i;
+			}
+			else
+			{
+				buf[k] = arr[j];
+				++j;
+			}
+			++k;
+		}
+
+		for (int i = left; i <= right; ++i)
+		{
+			arr[i] = buf[i];
+		}
 	}
 }
+
+void mergesort(vector<int>& vec, int start, int end)  // сортировка слиянием
+{
+	if (!vec.empty()) 
+	{
+		vector<int> buf(vec.size());  // создаем вектор buf, по размеру равный первоначальному вектору
+		mergesortimpl(vec, buf, start - 1, (vec.size() - 1 - (vec.size() - end)));
+	}
+}
+
 
 bool check_Y_N(string str) // Y и N через while
 {
@@ -207,7 +248,10 @@ int main()
 		string order;
 		check_order_of_sorting(order, "\nInput an order of sorting (asc/desc): ");  // entering the sorting order
 
-		sortingarray(vec, start, end, order); // sorting the array according to the order
+		mergesort(vec, start, end); // sorting the array according to the order
+
+		if (order == "desc")
+			sortingdesc(vec, start, end);
 
 		arrayoutput(vec);
 
