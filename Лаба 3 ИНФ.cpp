@@ -161,10 +161,11 @@ void sortingarray(vector<int>& vec, int start, int end, string order)
 	}
 }
 
-char check_Y_N(string str) // Y и N
+bool check_Y_N(string str) // Y и N через while
 {
 	cout << str;
 	string inp;
+	bool cont;
 	bool state = true;
 
 	while (state)
@@ -174,7 +175,11 @@ char check_Y_N(string str) // Y и N
 		if (inp.size() == 1 && (inp[0] == 'Y' || inp[0] == 'N'))
 		{
 			state = false;
-			return inp[0];
+			if (inp[0] == 'Y')
+				cont = true;
+			else
+				cont = false;
+			return cont;
 		}
 		else
 		cout << "\nError! Repeat the input!\n";
@@ -184,7 +189,7 @@ char check_Y_N(string str) // Y и N
 
 int main()
 {
-	char ans;
+	bool ans = true;
     cout << "\nArray modification" << endl;
 
     vector<int> vec;
@@ -194,7 +199,7 @@ int main()
 
 	arrayoutput(vec);  // output an array 
 
-	do
+	while (ans)
 	{
 		int start, end;
 		check_bounds(n, start, end, "\nInput bounds of the segment in the format '0 0': ");  // entering the boundaries of the array
@@ -208,6 +213,6 @@ int main()
 
 		ans = check_Y_N("\nContinue? (Y/N): ");
 
-	} while (ans == 'Y');
+	}
 
 }
