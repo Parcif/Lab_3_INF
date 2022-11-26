@@ -20,7 +20,7 @@ int check_N(string str)
 		{
 			res = stoi(inp);
 
-			if (res < INT_MAX && res > 0 && inp.size() == to_string(res).size())
+			if (res > 0 && inp.size() == to_string(res).size())
 			{
 				state = false;
 				return res;
@@ -33,10 +33,11 @@ int check_N(string str)
 		{
 			cout << "\nError! Repeat the input!!!\n";
 		}
-		catch (out_of_range& e)
+		catch (out_of_range)
 		{
 			cout << "\nOh, out of range!!!\n" << endl;
 		}
+
 	}
 
 }
@@ -107,7 +108,8 @@ int check_start(string str, int n)
 		try
 		{
 			res = stoi(inp);
-			if (inp.size() == to_string(res).size() && res < INT_MAX && res > 0)
+
+			if (res < n && res > 0 && inp.size() == to_string(res).size())
 			{
 				state = false;
 				return res;
@@ -120,18 +122,19 @@ int check_start(string str, int n)
 		{
 			cout << "\nError! Repeat the input!!!\n";
 		}
+		catch (out_of_range)
+		{
+			cout << "\nOh, out of range!!!\n" << endl;
+		}
 
 	}
 
 }
 
-void check_bounds(int n, int& start, int &end, string str)
+int check_end(string str, int n, int start)
 {
-
-	cout << "\nEnter the upper bound: ";
-	//start = 
-
-	/*cout << str;
+	cout << str;
+	int res;
 	string inp;
 	bool state = true;
 
@@ -140,36 +143,34 @@ void check_bounds(int n, int& start, int &end, string str)
 		getline(cin, inp);
 		try
 		{
-			if (inp[1] == ' ' && inp.size() == 4)
+			res = stoi(inp);
+
+			if (start < res && res <= n && inp.size() == to_string(res).size())
 			{
-				regex regex("\\ ");
-				vector<string> out(sregex_token_iterator(inp.begin(), inp.end(), regex, -1), sregex_token_iterator());
-
-				start = stoi(out[0]);
-				end = stoi(out[1]);
-
-				if (start < end && end <= n && (out[1].size() == 1 || out[1].size() == 2))
-				{
-					state = false;
-				}
-				else
-					cout << "\nError! Repeat the input!\n";
+				state = false;
+				return res;
 			}
 			else
-				throw runtime_error("\nError!!! Incorrect format!\n");
+				cout << "\nError! Repeat the input!\n";
 
 		}
 		catch (invalid_argument)
 		{
-			cout << "\nError!!! Repeat the input!\n";
+			cout << "\nError! Repeat the input!!!\n";
 		}
-		catch (runtime_error& e)
+		catch (out_of_range)
 		{
-			cout << e.what() << endl;
+			cout << "\nOh, out of range!!!\n" << endl;
 		}
 
-	}*/
+	}
 
+}
+
+void check_bounds(int n, int& start, int &end, string str)
+{
+	start = check_start("\nEnter the upper bound: ", n);
+	end = check_end("\nEnter the lower bound: ", n, start);	
 }
 
 void check_order_of_sorting(string &order,string str)
