@@ -100,21 +100,23 @@ void check_bounds(int n, int& start, int &end, string str)
 		getline(cin, inp);
 		try
 		{
-			if (inp[1] != ' ')
-				throw runtime_error("\nError!!! Incorrect format!\n");
-
-			regex regex("\\ ");
-			vector<string> out(sregex_token_iterator(inp.begin(), inp.end(), regex, -1), sregex_token_iterator());
-
-			start = stoi(out[0]);
-			end = stoi(out[1]);
-
-			if (inp.size() == 3 && start < end && end <= n)
+			if (inp[1] == ' ' && inp.size() == 3)
 			{
-				state = false;
+				regex regex("\\ ");
+				vector<string> out(sregex_token_iterator(inp.begin(), inp.end(), regex, -1), sregex_token_iterator());
+
+				start = stoi(out[0]);
+				end = stoi(out[1]);
+
+				if (start < end && end <= n)
+				{
+					state = false;
+				}
+				else
+					cout << "\nError! Repeat the input!\n";
 			}
 			else
-				cout << "\nError! Repeat the input!\n";
+				throw runtime_error("\nError!!! Incorrect format!\n");
 
 		}
 		catch (invalid_argument)
