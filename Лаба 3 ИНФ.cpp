@@ -3,6 +3,7 @@
 #include <vector>
 #include <regex>
 #include <algorithm>
+#include <limits>
 using namespace std;
 
 int check_N(string str)
@@ -18,20 +19,24 @@ int check_N(string str)
 		try
 		{
 			res = stoi(inp);
-			if (inp.size() == to_string(res).size() && res < 10000000 && res > -10000000)
+
+			if (res < INT_MAX && res > 0 && inp.size() == to_string(res).size())
 			{
 				state = false;
 				return res;
 			}
 			else
 				cout << "\nError! Repeat the input!\n";
-
+		
 		}
 		catch (invalid_argument)
 		{
 			cout << "\nError! Repeat the input!!!\n";
 		}
-
+		catch (out_of_range& e)
+		{
+			cout << "\nOh, out of range!!!\n" << endl;
+		}
 	}
 
 }
@@ -89,9 +94,10 @@ void arrayoutput(vector<int>& vec)
 	cout << "]" << endl;
 }
 
-void check_bounds(int n, int& start, int &end, string str)
+int check_start(string str, int n)
 {
 	cout << str;
+	int res;
 	string inp;
 	bool state = true;
 
@@ -100,7 +106,41 @@ void check_bounds(int n, int& start, int &end, string str)
 		getline(cin, inp);
 		try
 		{
-			if (inp[1] == ' ' && inp.size() == 3)
+			res = stoi(inp);
+			if (inp.size() == to_string(res).size() && res < INT_MAX && res > 0)
+			{
+				state = false;
+				return res;
+			}
+			else
+				cout << "\nError! Repeat the input!\n";
+
+		}
+		catch (invalid_argument)
+		{
+			cout << "\nError! Repeat the input!!!\n";
+		}
+
+	}
+
+}
+
+void check_bounds(int n, int& start, int &end, string str)
+{
+
+	cout << "\nEnter the upper bound: ";
+	//start = 
+
+	/*cout << str;
+	string inp;
+	bool state = true;
+
+	while (state)
+	{
+		getline(cin, inp);
+		try
+		{
+			if (inp[1] == ' ' && inp.size() == 4)
 			{
 				regex regex("\\ ");
 				vector<string> out(sregex_token_iterator(inp.begin(), inp.end(), regex, -1), sregex_token_iterator());
@@ -108,7 +148,7 @@ void check_bounds(int n, int& start, int &end, string str)
 				start = stoi(out[0]);
 				end = stoi(out[1]);
 
-				if (start < end && end <= n)
+				if (start < end && end <= n && (out[1].size() == 1 || out[1].size() == 2))
 				{
 					state = false;
 				}
@@ -128,7 +168,7 @@ void check_bounds(int n, int& start, int &end, string str)
 			cout << e.what() << endl;
 		}
 
-	}
+	}*/
 
 }
 
@@ -245,12 +285,12 @@ int main()
 	while (ans)
 	{
 		int start, end;
-		check_bounds(n, start, end, "\nInput bounds of the segment in the format '0 0': ");  // entering the boundaries of the array
+		check_bounds(n, start, end, "\nInput bounds of the segment: ");  // entering the boundaries of the array
 
 		string order;
 		check_order_of_sorting(order, "\nInput an order of sorting (asc/desc): ");  // entering the sorting order
 
-		mergesort(vec, start, end); // sorting the array according to the order
+		mergesort(vec, start, end); // sorting the array
 
 		if (order == "desc")
 			sortingdesc(vec, start, end);
