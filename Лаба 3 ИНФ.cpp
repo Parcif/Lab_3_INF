@@ -22,7 +22,6 @@ int check_N(string str)
 			if (res > 0 && inp.size() == to_string(res).size())
 			{
 				state = false;
-				return res;
 			}
 			else
 				cout << "\nError! Repeat the input!\n";
@@ -38,7 +37,7 @@ int check_N(string str)
 		}
 
 	}
-
+	return res;
 }
 
 int check_num() 
@@ -53,10 +52,9 @@ int check_num()
 		try
 		{
 			res = stoi(inp);
-			if (inp.size() == to_string(res).size() && res < 10000000 && res > -10000000)
+			if (inp.size() == to_string(res).size())
 			{
 				state = false;
-				return res;
 			}
 			else
 				cout << "\nError! Repeat the input!\n";
@@ -66,9 +64,12 @@ int check_num()
 		{
 			cout << "\nError! Repeat the input!!!\n";
 		}
-
+		catch (out_of_range)
+		{
+			cout << "\nOh, out of range!!!\n" << endl;
+		}
 	}
-
+	return res;
 }
 
 void fillarray(vector<int>& vec, int &n)
@@ -272,7 +273,6 @@ bool check_Y_N(string str) // Y и N через while
 
 int main()
 {
-	bool ans = true;
     cout << "\nArray modification" << endl;
 
     vector<int> vec;
@@ -281,6 +281,8 @@ int main()
 	fillarray(vec, n);  // filling in the array
 
 	arrayoutput(vec);  // output an array 
+
+	bool ans = true;
 
 	while (ans)
 	{
